@@ -89,19 +89,33 @@ class Tex(KaitaiStruct):
             self._read()
 
         def _read(self):
-            self.type = KaitaiStream.resolve_enum(Tex.Header.Attribute, self._io.read_u4le())
-            self.format = KaitaiStream.resolve_enum(Tex.Header.TextureFormat, self._io.read_u4le())
-            self.width = self._io.read_u2le()
-            self.height = self._io.read_u2le()
-            self.depth = self._io.read_u2le()
-            self.mip_levels = self._io.read_u2le()
+            self.data = []
+
+            self.data.append(self._io.read_bytes(4))
+            self.type = KaitaiStream.resolve_enum(Tex.Header.Attribute, KaitaiStream.packer_u4le.unpack(self.data[-1])[0])
+            self.data.append(self._io.read_bytes(4))
+            self.format = KaitaiStream.resolve_enum(Tex.Header.TextureFormat, KaitaiStream.packer_u4le.unpack(self.data[-1])[0])
+
+            self.data.append(self._io.read_bytes(2))
+            self.width = KaitaiStream.packer_u2le.unpack(self.data[-1])[0]
+            self.data.append(self._io.read_bytes(2))
+            self.height = KaitaiStream.packer_u2le.unpack(self.data[-1])[0]
+            self.data.append(self._io.read_bytes(2))
+            self.depth = KaitaiStream.packer_u2le.unpack(self.data[-1])[0]
+            self.data.append(self._io.read_bytes(2))
+            self.mip_levels = KaitaiStream.packer_u2le.unpack(self.data[-1])[0]
+
             self.lod_offset3 = []
             for i in range(3):
-                self.lod_offset3.append(self._io.read_u4le())
+                self.data.append(self._io.read_bytes(4))
+                self.lod_offset3.append(KaitaiStream.packer_u4le.unpack(self.data[-1])[0])
 
             self.offset_to_surface13 = []
             for i in range(13):
-                self.offset_to_surface13.append(self._io.read_u4le())
+                self.data.append(self._io.read_bytes(4))
+                self.offset_to_surface13.append(KaitaiStream.packer_u4le.unpack(self.data[-1])[0])
+            self.data = b''.join(self.data)
+            
 
     class Body(KaitaiStruct):
         def __init__(self, _io, _parent=None, _root=None):
@@ -112,7 +126,5 @@ class Tex(KaitaiStruct):
 
         def _read(self):
             self.data = []
-            i = 0
             while not self._io.is_eof():
                 self.data.append(self._io.read_bytes(1))
-                i += 1

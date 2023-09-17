@@ -57,8 +57,9 @@ def copy_channel(file: str, target : str, source : str):
     
     channels = {"b":0, "g":1, "r":2, "a":3}
 
-    body = tex.bdy.data
-    print(tex._root)
+    header = tex.hdr.data
+    print(len(header))
+    
     '''
         np.array(contents).reshape((len(contents)//pixel_size, pixel_size))
 
@@ -77,10 +78,10 @@ def copy_channel(file: str, target : str, source : str):
 
 if __name__ == "__main__":
     copy_channel("src/data/target.tex", "b", "r")
-    #tex = get_tex("target.tex")
-    #data = get_data(tex)
-    #image = get_image(data, tex.hdr.height, tex.hdr.width)
-    #image.show()
+    tex = get_tex("src/data/target.tex")
+    data = get_data(tex)
+    image = get_image(data, tex.hdr.height, tex.hdr.width)
+    image.show()
 
 
 
