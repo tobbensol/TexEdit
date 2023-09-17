@@ -22,7 +22,7 @@ class TexEdit:
         label = tk.Label(self.root, text= "test", font=("Arial", 20), bg=self.background_colour, foreground=self.text_colour)
         label.grid(row=0, column=0, columnspan=2)
 
-        img_tex = tex_channel_copier.get_tex("target.tex")
+        img_tex = tex_channel_copier.get_tex("src/data/target.tex")
         img_hdr = img_tex.hdr
         img_data = tex_channel_copier.get_data(img_tex)
         img = tex_channel_copier.get_image(img_data, img_hdr.height, img_hdr.width)

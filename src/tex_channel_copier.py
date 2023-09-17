@@ -1,7 +1,6 @@
 from pathlib import Path
-from src.tex import Tex
+from tex import Tex
 import numpy as np
-import scipy.misc as smp
 from PIL import Image
 
 def tex_channel_copier(directory: str, target : str, source : str):
@@ -77,7 +76,7 @@ def copy_channel(file: str, target : str, source : str):
     '''
 
 if __name__ == "__main__":
-    copy_channel("target.tex", "b", "r")
+    copy_channel("src/data/target.tex", "b", "r")
     #tex = get_tex("target.tex")
     #data = get_data(tex)
     #image = get_image(data, tex.hdr.height, tex.hdr.width)
