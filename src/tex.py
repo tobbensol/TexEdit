@@ -20,6 +20,10 @@ class Tex(KaitaiStruct):
         self.hdr = Tex.Header(self._io, self, self._root)
         self.bdy = Tex.Body(self._io, self, self._root)
 
+    def _write(self, file):
+        with open(file, "wb") as f:
+            f.write(self.hdr.data + b''.join(self.bdy.data))
+
     class Header(KaitaiStruct):
 
         class Attribute(IntFlag):
@@ -126,5 +130,9 @@ class Tex(KaitaiStruct):
 
         def _read(self):
             self.data = []
+            i = 0
             while not self._io.is_eof():
                 self.data.append(self._io.read_bytes(1))
+                i += 1
+                
+    
